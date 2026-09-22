@@ -1,2 +1,0 @@
-/give @a volleyball:volleyball
-/time set day
