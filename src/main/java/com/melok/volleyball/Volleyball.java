@@ -107,14 +107,20 @@ public class Volleyball {
     public void onPlayerAttackMob(AttackEntityEvent event) {
         var player = event.getEntity();
         var target = event.getTarget();
+        float mult = 1;
 
         if (player.level() instanceof ServerLevel level) {
             if(target instanceof FallingBlockEntity fallingBlockEntity) {
                 if (fallingBlockEntity.getBlockState().is(Volleyball_ball.SIMPLE_BLOCK.get())) {
+                    if(!player.onGround()) {
+                        mult = 1.2f;
+                    }
                     Vec3 look = player.getLookAngle();
-                    fallingBlockEntity.setDeltaMovement(new Vec3(look.x, look.y, look.z));
+                    Vec3 finals = new Vec3(look.x * mult, look.y * mult, look.z * mult);
+                    fallingBlockEntity.setDeltaMovement(finals);
                     fallingBlockEntity.hasImpulse = true;
                     fallingBlockEntity.hurtMarked = true;
+                    mult = 1;
                     event.setCanceled(true);
                 }
 
